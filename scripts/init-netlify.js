@@ -1,9 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-// Konfiguration för Netlify Headers
-// Detta tillåter 'screen-wake-lock' vilket annars blockeras av webbläsarens standardpolicy.
+// Konfiguration för Netlify
 const netlifyConfig = `
+[build]
+  command = "npm run build"
+  publish = "dist"
+
 [[headers]]
   for = "/*"
   [headers.values]
@@ -12,12 +15,10 @@ const netlifyConfig = `
 `;
 
 try {
-  // Skriv filen till roten av projektet (ett steg upp från /scripts om det körs därifrån, annars cwd)
-  // Vi utgår från process.cwd() för att vara säkra i byggmiljöer.
   const outputPath = path.join(process.cwd(), 'netlify.toml');
   
   fs.writeFileSync(outputPath, netlifyConfig.trim());
-  console.log('✅ netlify.toml har skapats framgångsrikt med Permissions-Policy headers.');
+  console.log('✅ netlify.toml har uppdaterats med build-instruktioner.');
   console.log('   Mål:', outputPath);
 } catch (error) {
   console.error('❌ Misslyckades med att skapa netlify.toml:', error);
