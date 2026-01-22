@@ -1,0 +1,5 @@
+{
+  "name": "Mötesomdirigering",
+  "description": "En landningssida som automatiskt vidarebefordrar användare till ett Zoom-möte med hjälpinstruktioner.",
+  "requestFramePermissions": []
+}
