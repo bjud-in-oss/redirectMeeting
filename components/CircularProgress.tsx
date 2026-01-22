@@ -1,49 +1,60 @@
 import React from 'react';
 
 interface CircularProgressProps {
-  progress: number; // 0 to 100
+  value: number;
+  max: number;
   size?: number;
   strokeWidth?: number;
+  children?: React.ReactNode;
 }
 
 export const CircularProgress: React.FC<CircularProgressProps> = ({ 
-  progress, 
-  size = 60, 
-  strokeWidth = 4 
+  value, 
+  max, 
+  size = 120, 
+  strokeWidth = 8,
+  children 
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (progress / 100) * circumference;
+  const progress = value / max;
+  const dashoffset = circumference - progress * circumference;
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative inline-flex items-center justify-center">
       <svg
-        className="transform -rotate-90"
         width={size}
         height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        className="transform -rotate-90 transition-all duration-500 ease-in-out"
       >
+        {/* Background Circle */}
         <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          fill="transparent"
           className="text-brand-100"
-          strokeWidth={strokeWidth}
-          stroke="currentColor"
-          fill="transparent"
-          r={radius}
-          cx={size / 2}
-          cy={size / 2}
         />
+        {/* Progress Circle */}
         <circle
-          className="text-brand-600 transition-all duration-100 ease-linear"
-          strokeWidth={strokeWidth}
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          stroke="currentColor"
-          fill="transparent"
-          r={radius}
           cx={size / 2}
           cy={size / 2}
+          r={radius}
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          strokeDashoffset={dashoffset}
+          strokeLinecap="round"
+          className="text-brand-500 transition-all duration-1000 ease-linear"
         />
       </svg>
+      <div className="absolute flex flex-col items-center justify-center text-brand-700 font-semibold">
+        {children}
+      </div>
     </div>
   );
 };

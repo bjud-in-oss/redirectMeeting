@@ -1,17 +1,28 @@
+export const APP_CONFIG = {
+  redirectDelaySeconds: 5,
+};
+
 export const MEETING_CONFIG = {
-  url: "https://zoom.us/j/98913147891?pwd=dHhvWE92c0VIQ1hobVJpRS8zQVdlQT09",
-  passcode: "0",
-  redirectDelayMs: 5000,
+  title: "Veckomöte - Produktteamet",
+  platform: "Zoom",
+  // I en riktig app skulle detta vara din riktiga Teams/Zoom/Meet länk
+  url: "https://zoom.us/j/98913147891?pwd=dHhvWE92c0VIQ1hobVJpRS8zQVdlQT09", 
+  passcode: "123 456",
+  organizer: "Produktledningen"
 };
 
 export const TEXTS = {
-  title: "Hjälpföreningens Möte",
-  subTitle: "Du vidarebefordras nu till mötet",
-  waitMessage: "Ett ögonblick...",
-  helpButton: "Klicka här om du behöver hjälp",
-  manualLink: "Gå till mötet manuellt",
-  instructionsTitle: "Instruktioner",
-  instructionsSubtitle: "Så här ansluter du",
-  passcodeLabel: "Om Zoom frågar efter lösenkod, ange:",
-  backButton: "Fortsätt till mötet",
+  connecting: "Ansluter till mötet...",
+  redirectingIn: "Du skickas vidare om",
+  seconds: "sekunder",
+  paused: "Nedräkning pausad",
+  manualLink: "Gå till mötet nu",
+  passcodeLabel: "Möteskod / Lösenord",
+  cancel: "Pausa",
+  resume: "Återuppta",
+  copy: "Kopiera",
+  copied: "Kopierad!",
+  helpTitle: "Problem med att ansluta?",
+  helpSubtitle: "Här är uppgifter du kan behöva om den automatiska länken inte fungerar.",
+  platformLabel: "Plattform"
 };

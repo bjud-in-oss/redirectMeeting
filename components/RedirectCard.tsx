@@ -1,48 +1,86 @@
-import React from 'react';
-import { TEXTS } from '../constants';
-import { CircularProgress } from './CircularProgress';
-import { Loader2, HelpCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { APP_CONFIG, MEETING_CONFIG, TEXTS } from '../constants';
+import { ArrowRight, Pause, Play, ExternalLink } from 'lucide-react';
 
-interface RedirectCardProps {
-  progress: number;
-  timeLeft: number;
-  onPause: () => void;
-}
+export const RedirectCard: React.FC = () => {
+  const [timeLeft, setTimeLeft] = useState(APP_CONFIG.redirectDelaySeconds);
+  const [isPaused, setIsPaused] = useState(false);
 
-export const RedirectCard: React.FC<RedirectCardProps> = ({ progress, timeLeft, onPause }) => {
+  useEffect(() => {
+    if (isPaused) return;
+
+    if (timeLeft === 0) {
+      window.location.href = MEETING_CONFIG.url;
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, isPaused]);
+
+  const togglePause = () => setIsPaused(!isPaused);
+
+  const handleManualRedirect = () => {
+    window.location.href = MEETING_CONFIG.url;
+  };
+
+  const progressPercentage = (timeLeft / APP_CONFIG.redirectDelaySeconds) * 100;
+
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-4 relative overflow-hidden border border-slate-100">
-      <div className="flex flex-col items-center text-center space-y-8">
+    <div className="flex flex-col items-center w-full max-w-md mx-auto">
+      {/* Main Card */}
+      <div className="bg-white rounded-3xl shadow-xl shadow-brand-900/5 p-8 w-full text-center border border-white/50 backdrop-blur-xl relative overflow-hidden">
         
-        {/* Header Section */}
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-slate-800 tracking-tight">{TEXTS.title}</h1>
-          <p className="text-slate-500 font-medium">{TEXTS.subTitle}</p>
+        <h1 className="text-xl font-bold text-slate-800 mb-1">{MEETING_CONFIG.title}</h1>
+        <p className="text-sm text-slate-500 mb-8">arrangeras av {MEETING_CONFIG.organizer}</p>
+
+        {/* Minimal Progress Bar Area */}
+        <div className="mb-8 w-full px-4">
+          <div className="flex justify-between items-end mb-2">
+             <span className="text-brand-600 font-medium text-sm animate-pulse">
+              {isPaused ? TEXTS.paused : TEXTS.connecting}
+            </span>
+            <span className="text-xs text-slate-400 font-mono tabular-nums">
+              {timeLeft} {TEXTS.seconds}
+            </span>
+          </div>
+          
+          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div 
+              className={`h-full bg-brand-500 rounded-full transition-all duration-1000 ease-linear ${isPaused ? 'opacity-50' : ''}`}
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
         </div>
 
-        {/* Animation Section */}
-        <div className="relative flex flex-col items-center justify-center py-4">
-          <div className="relative">
-             <CircularProgress progress={progress} size={120} strokeWidth={6} />
-             <div className="absolute inset-0 flex items-center justify-center">
-                 <span className="text-3xl font-bold text-slate-700">{Math.ceil(timeLeft / 1000)}</span>
-             </div>
-          </div>
-          <div className="flex items-center gap-2 mt-6 text-brand-600 animate-pulse">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span className="text-sm font-semibold uppercase tracking-wider">{TEXTS.waitMessage}</span>
+        <div className="space-y-4">
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={togglePause}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-50 text-brand-700 font-semibold hover:bg-brand-100 transition-colors border border-brand-100 text-sm"
+            >
+              {isPaused ? (
+                <>
+                  <Play className="w-4 h-4 fill-current" /> {TEXTS.resume}
+                </>
+              ) : (
+                <>
+                  <Pause className="w-4 h-4 fill-current" /> {TEXTS.cancel}
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={handleManualRedirect}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/20 active:scale-[0.98] text-sm"
+            >
+              {TEXTS.manualLink} <ExternalLink className="w-4 h-4" />
+            </button>
           </div>
         </div>
-
-        {/* Action Section */}
-        <button 
-          onClick={onPause}
-          className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-50 hover:bg-slate-100 text-slate-600 transition-all duration-200 border border-slate-200 hover:border-slate-300"
-        >
-          <HelpCircle className="w-4 h-4 group-hover:text-brand-600 transition-colors" />
-          <span className="text-sm font-medium">{TEXTS.helpButton}</span>
-        </button>
-
       </div>
     </div>
   );

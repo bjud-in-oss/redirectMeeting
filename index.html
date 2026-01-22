@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hjälpföreningens Möte - Vidarebefordran</title>
-    <!-- We keep Tailwind CDN for simplicity in styling, though normally this would be in CSS -->
+    <title>Ansluter till möte...</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +23,9 @@
                 600: '#0284c7',
                 700: '#0369a1',
               }
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             }
           },
         },
@@ -44,8 +46,8 @@
 }
 </script>
 </head>
-  <body class="bg-brand-50 text-slate-800 antialiased">
-    <div id="root"></div>
+  <body class="bg-brand-50 text-slate-800 antialiased h-screen flex flex-col">
+    <div id="root" class="flex-grow flex flex-col"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>

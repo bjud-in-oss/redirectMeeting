@@ -1,54 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MEETING_CONFIG, TEXTS } from '../constants';
-import { Video, KeyRound, ExternalLink } from 'lucide-react';
+import { Copy, Check, Info, Shield, Video } from 'lucide-react';
 
-interface HelpCardProps {
-  onResume: () => void;
-}
+export const HelpCard: React.FC = () => {
+  const [copied, setCopied] = useState(false);
 
-export const HelpCard: React.FC<HelpCardProps> = ({ onResume }) => {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(MEETING_CONFIG.passcode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-4 animate-fade-in border border-slate-100">
-      <div className="flex flex-col items-center text-center space-y-6">
-        
-        <div className="bg-brand-50 p-4 rounded-full">
-          <Video className="w-8 h-8 text-brand-600" />
-        </div>
-
+    <div className="mt-8 bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-brand-100 w-full max-w-md mx-auto shadow-sm">
+      <div className="flex items-start gap-3 mb-4">
+        <Info className="w-5 h-5 text-brand-500 mt-0.5 flex-shrink-0" />
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">{TEXTS.instructionsTitle}</h2>
-          <p className="text-slate-600">{TEXTS.instructionsSubtitle}</p>
+          <h3 className="font-semibold text-slate-800 text-sm">{TEXTS.helpTitle}</h3>
+          <p className="text-xs text-slate-500 mt-1 leading-relaxed">{TEXTS.helpSubtitle}</p>
         </div>
+      </div>
 
-        <div className="w-full bg-slate-50 p-4 rounded-xl border border-slate-100 text-left space-y-3">
-          <div className="flex items-start gap-3">
-            <KeyRound className="w-5 h-5 text-slate-400 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="text-sm text-slate-500 font-medium mb-1">{TEXTS.passcodeLabel}</p>
-              <div className="flex items-center gap-2">
-                <code className="bg-white px-3 py-1 rounded border border-slate-200 text-lg font-mono font-bold text-brand-700">
-                  {MEETING_CONFIG.passcode}
-                </code>
-              </div>
-            </div>
+      <div className="space-y-3">
+        {/* Platform Info */}
+        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+          <div className="flex items-center gap-2">
+            <Video className="w-4 h-4 text-slate-400" />
+            <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">{TEXTS.platformLabel}</span>
           </div>
+          <span className="text-sm font-semibold text-slate-700">{MEETING_CONFIG.platform}</span>
         </div>
 
-        <div className="flex flex-col gap-3 w-full">
-           <a 
-            href={MEETING_CONFIG.url}
-            className="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
-          >
-            <ExternalLink className="w-4 h-4" />
-            {TEXTS.manualLink}
-          </a>
-          
-          <button 
-            onClick={onResume}
-            className="w-full bg-white hover:bg-slate-50 text-slate-600 font-medium py-3 px-6 rounded-lg border border-slate-200 transition-colors"
-          >
-            {TEXTS.backButton}
-          </button>
+        {/* Passcode */}
+        <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100 group hover:border-brand-200 transition-colors">
+          <div className="flex items-center gap-2">
+            <Shield className="w-4 h-4 text-slate-400" />
+            <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">{TEXTS.passcodeLabel}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-mono font-bold text-slate-800 tracking-wider">{MEETING_CONFIG.passcode}</span>
+            <button
+              onClick={handleCopy}
+              className="text-slate-400 hover:text-brand-600 transition-colors p-1"
+              title={TEXTS.copy}
+            >
+              {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
       </div>
     </div>
