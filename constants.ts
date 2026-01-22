@@ -3,12 +3,13 @@ export const APP_CONFIG = {
 };
 
 export const MEETING_CONFIG = {
-  title: "Veckomöte - Produktteamet",
+  title: "Hjälpföreningens möte",
   platform: "Zoom",
   // I en riktig app skulle detta vara din riktiga Teams/Zoom/Meet länk
   url: "https://zoom.us/j/98913147891?pwd=dHhvWE92c0VIQ1hobVJpRS8zQVdlQT09", 
-  passcode: "123 456",
-  organizer: "Produktledningen"
+  meetingId: "98913147891",
+  passcode: "0",
+  organizer: "Hjälpföreningen i Utby"
 };
 
 export const TEXTS = {
@@ -17,6 +18,8 @@ export const TEXTS = {
   seconds: "sekunder",
   paused: "Nedräkning pausad",
   manualLink: "Gå till mötet nu",
+  zoomLinkLabel: "Zoom-länk",
+  meetingIdLabel: "Användar-ID",
   passcodeLabel: "Möteskod / Lösenord",
   cancel: "Pausa",
   resume: "Återuppta",
@@ -24,5 +27,4 @@ export const TEXTS = {
   copied: "Kopierad!",
   helpTitle: "Problem med att ansluta?",
   helpSubtitle: "Här är uppgifter du kan behöva om den automatiska länken inte fungerar.",
-  platformLabel: "Plattform"
 };
