@@ -8,10 +8,10 @@ export const BreakoutIcon: React.FC<{ className?: string }> = ({ className = "w-
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M4 4H10V10H4V4Z" rx="1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-      <path d="M14 4H20V10H14V4Z" rx="1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-      <path d="M4 14H10V20H4V14Z" rx="1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-      <path d="M14 14H20V20H14V14Z" rx="1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      <rect x="4" y="4" width="7" height="7" rx="1" />
+      <rect x="13" y="4" width="7" height="7" rx="1" />
+      <rect x="4" y="13" width="7" height="7" rx="1" />
+      <rect x="13" y="13" width="7" height="7" rx="1" />
     </svg>
   );
 };

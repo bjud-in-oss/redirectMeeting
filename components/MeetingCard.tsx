@@ -1,62 +1,95 @@
-import React, { useState } from 'react';
-import { MAIN_MEETING, UI_TEXTS } from '../constants';
-import { Video, Copy, Check, MapPin } from 'lucide-react';
+import React from 'react';
+import { MAIN_MEETING, UI_TEXTS, ScheduleItem } from '../constants';
+import { Video, MapPin, Slash } from 'lucide-react';
 
-export const MeetingCard: React.FC = () => {
-  const [copiedId, setCopiedId] = useState(false);
-  
-  const copyToClipboard = (text: string, setFn: (val: boolean) => void) => {
-    navigator.clipboard.writeText(text);
-    setFn(true);
-    setTimeout(() => setFn(false), 2000);
-  };
+interface MeetingCardProps {
+  title: string;
+  description: string;
+  schedule: ScheduleItem[];
+  isPrimary?: boolean;
+  hideAction?: boolean;
+}
+
+export const MeetingCard: React.FC<MeetingCardProps> = ({ 
+  title, 
+  description, 
+  schedule, 
+  isPrimary = false,
+  hideAction = false
+}) => {
+  const hasMeetings = schedule.length > 0;
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl shadow-brand-900/5 border border-slate-200 overflow-hidden relative">
-      {/* Decorative top bar */}
-      <div className="h-2 w-full bg-brand-500" />
-      
-      <div className="p-6 sm:p-8">
-        <div className="flex flex-col items-center text-center mb-8">
-          <div className="bg-brand-50 text-brand-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-4 inline-flex items-center gap-2">
-            <MapPin className="w-4 h-4" />
-            {MAIN_MEETING.location}
+    <div className={`flex flex-col h-full bg-white rounded-2xl border ${isPrimary ? 'border-brand-100 shadow-xl shadow-brand-900/5' : 'border-slate-200 shadow-sm'} overflow-hidden relative transition-all hover:shadow-md`}>
+      {/* Header */}
+      <div className={`p-6 pb-4 ${isPrimary ? 'bg-brand-50/30' : 'bg-white'}`}>
+        <div className="flex items-start justify-between mb-3">
+          {/* Badge now always uses brand colors */}
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-100 text-brand-700">
+            <MapPin className="w-3 h-3" />
+            {title}
           </div>
-          
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">
-            Söndagsmöten
-          </h2>
-          <p className="text-slate-500 max-w-sm mx-auto">
-            Klicka nedan för att ansluta till mötet. Välj <strong>Kapellsalen</strong> i Zoom-menyn (Grupprum).
-          </p>
         </div>
+        <p className="text-sm text-slate-500 leading-snug min-h-[40px]">
+          {description}
+        </p>
+      </div>
 
-        {/* Primary Action Button */}
-        <a 
-          href={MAIN_MEETING.url}
-          className="group relative flex items-center justify-center gap-3 w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-lg py-4 px-6 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-brand-600/25 hover:shadow-brand-600/40 mb-8"
-        >
-          <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          <Video className="w-6 h-6 animate-pulse" />
-          <span>{UI_TEXTS.joinButton}</span>
-        </a>
-
-        {/* Info Footer */}
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-              {UI_TEXTS.idLabel}
-            </span>
-            <button 
-              onClick={() => copyToClipboard(MAIN_MEETING.meetingId, setCopiedId)}
-              className="flex items-center gap-2 text-sm font-mono font-medium text-slate-700 hover:text-brand-600 transition-colors"
-            >
-              {MAIN_MEETING.meetingId}
-              {copiedId ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
-            </button>
-           </div>
+      {/* Schedule Content */}
+      <div className="flex-1 p-6 pt-2">
+        <div className="mt-4 space-y-4">
+          <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">
+            Kalender
+          </h4>
+          
+          {hasMeetings ? (
+            <div className="space-y-4">
+              {schedule.map((item, idx) => (
+                <div key={idx} className="flex gap-4 group">
+                  <div className="w-12 pt-0.5 text-right shrink-0">
+                    <span className="text-sm font-semibold text-slate-900 block tabular-nums">
+                      {item.time}
+                    </span>
+                  </div>
+                  <div className="relative pl-4 border-l-2 border-slate-100 group-hover:border-brand-200 transition-colors">
+                    <h5 className="font-bold text-slate-800 text-sm leading-tight">
+                      {item.title}
+                    </h5>
+                    {item.subtitle && (
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {item.subtitle}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="py-6 flex flex-col items-center justify-center text-slate-400 text-center">
+              <Slash className="w-8 h-8 opacity-20 mb-2" />
+              <p className="text-sm font-medium">{UI_TEXTS.closed}</p>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Action Footer - Only shown if hideAction is false */}
+      {!hideAction && (
+        <div className="p-4 bg-slate-50 border-t border-slate-100">
+          <a 
+            href={MAIN_MEETING.url}
+            className={`flex items-center justify-center gap-2 w-full font-bold py-3 px-4 rounded-xl transition-all active:scale-[0.98] ${
+              hasMeetings 
+                ? 'bg-brand-600 hover:bg-brand-700 text-white shadow-lg shadow-brand-600/20' 
+                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+            }`}
+            onClick={(e) => !hasMeetings && e.preventDefault()}
+          >
+            <Video className="w-4 h-4" />
+            <span>{hasMeetings ? `${UI_TEXTS.joinButton} ${title}` : 'Stängt'}</span>
+          </a>
+        </div>
+      )}
     </div>
   );
 };

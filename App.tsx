@@ -1,158 +1,108 @@
-import React, { useState, useMemo } from 'react';
-import { HEADER_INFO, SCHEDULE_RULES, UI_TEXTS, BREAKOUT_INFO } from './constants';
+import React, { useMemo } from 'react';
+import { HEADER_INFO, ROOMS, UI_TEXTS, BREAKOUT_INFO, MAIN_MEETING } from './constants';
 import { MeetingCard } from './components/MeetingCard';
 import { BreakoutIcon } from './components/BreakoutIcon';
 import { getNextSundayInfo } from './utils';
-import { Home, Calendar, ChevronDown, ChevronUp, Users, Clock } from 'lucide-react';
+import { Video, Calendar, ArrowRight } from 'lucide-react';
 
 const App: React.FC = () => {
-  const [showFullSchedule, setShowFullSchedule] = useState(false);
   const sundayInfo = useMemo(() => getNextSundayInfo(), []);
 
-  // Determine which block 2 applies to this Sunday
-  const getBlock2Content = (weekIndex: number) => {
-    if (SCHEDULE_RULES.block2.variations.fifthSunday.weeks.includes(weekIndex)) {
-      return SCHEDULE_RULES.block2.variations.fifthSunday;
-    }
-    if (SCHEDULE_RULES.block2.variations.sundaySchool.weeks.includes(weekIndex)) {
-      return SCHEDULE_RULES.block2.variations.sundaySchool;
-    }
-    return SCHEDULE_RULES.block2.variations.priesthoodRS;
-  };
-
-  const currentBlock2 = getBlock2Content(sundayInfo.weekIndex);
-
   return (
-    <div className="min-h-screen w-full bg-slate-50 relative font-sans pb-20">
+    <div className="min-h-screen w-full bg-slate-50 relative font-sans flex flex-col items-center py-12 px-4">
       
       {/* Background Decorative Gradient */}
-      <div className="absolute top-0 left-0 w-full h-[32rem] bg-gradient-to-b from-brand-50 to-slate-50 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-[32rem] bg-gradient-to-b from-brand-50 via-white to-slate-50 pointer-events-none" />
 
-      <main className="relative z-10 max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <main className="relative z-10 w-full max-w-2xl">
         
-        {/* Header */}
+        {/* 1. Header & Title */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm mb-6 border border-brand-100">
-            <Home className="w-8 h-8 text-brand-600" />
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-3 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 tracking-tight">
             {HEADER_INFO.title}
           </h1>
-          <p className="text-lg font-medium text-slate-700 mb-4">
+          <p className="text-brand-600 font-medium">
             {HEADER_INFO.subtitle}
           </p>
         </div>
 
-        {/* Main Connection Card */}
-        <div className="mb-6">
-          <MeetingCard />
-        </div>
-
-        {/* Simplified Breakout Room Instruction */}
-        <div className="flex gap-4 items-center bg-white/80 backdrop-blur rounded-xl p-5 border border-slate-200 shadow-sm mb-8">
-          <div className="p-3 bg-slate-800 text-white rounded-lg shrink-0">
-             <BreakoutIcon className="w-6 h-6" />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-slate-900 text-sm uppercase tracking-wide mb-1">{UI_TEXTS.breakoutTitle}</h3>
-            <p className="text-slate-700 text-sm leading-relaxed">
-              {BREAKOUT_INFO.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Simplified Dynamic Schedule Section */}
-        <div className="mb-10">
-          <div className="flex items-center gap-2 mb-4 px-1 text-slate-800">
-            <Calendar className="w-5 h-5 text-brand-600" />
-            <h3 className="font-bold">
-              {sundayInfo.isToday ? UI_TEXTS.today : UI_TEXTS.nextSunday}
-              <span className="font-normal text-slate-500 ml-1">
-                — {sundayInfo.formattedDate}
-              </span>
-            </h3>
-          </div>
-
-          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm divide-y divide-slate-100">
-            {/* Block 1 */}
-            <div className="p-4 flex gap-4 items-baseline">
-              <div className="w-14 text-slate-400 text-sm font-semibold tabular-nums shrink-0">
-                11:00
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900">{SCHEDULE_RULES.block1.title}</h4>
-                <div className="text-sm text-slate-500 flex items-center gap-1 mt-1">
-                   <Users className="w-3.5 h-3.5" /> 
-                   {SCHEDULE_RULES.block1.room}
-                </div>
-              </div>
-            </div>
-
-            {/* Block 2 */}
-            <div className="p-4 flex gap-4 items-baseline bg-brand-50/30">
-              <div className="w-14 text-brand-500 text-sm font-semibold tabular-nums shrink-0">
-                12:10
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900">{currentBlock2.title}</h4>
-                <div className="text-sm text-slate-600 flex flex-wrap gap-x-3 gap-y-1 mt-1">
-                  {currentBlock2.rooms.map((room) => (
-                    <span key={room} className="flex items-center gap-1">
-                       <Users className="w-3.5 h-3.5 text-brand-400" />
-                       {room}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Toggle Full Schedule */}
-        <div className="text-center">
-          <button 
-            onClick={() => setShowFullSchedule(!showFullSchedule)}
-            className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors py-2"
+        {/* 2. Primary Action (2 Steps) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-12">
+          
+          {/* Step 1: Link Button */}
+          <a 
+            href={MAIN_MEETING.url}
+            className="group flex flex-col items-center justify-center gap-3 bg-brand-600 hover:bg-brand-700 text-white py-6 px-4 rounded-2xl shadow-xl shadow-brand-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] text-center h-full"
           >
-            {showFullSchedule ? (
-              <>
-                {UI_TEXTS.hideFullSchedule}
-                <ChevronUp className="w-4 h-4" />
-              </>
-            ) : (
-              <>
-                {UI_TEXTS.showFullSchedule}
-                <ChevronDown className="w-4 h-4" />
-              </>
-            )}
-          </button>
+            <div className="bg-white/20 p-3 rounded-full mb-1 group-hover:bg-white/25 transition-colors">
+              <Video className="w-8 h-8" />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-lg sm:text-xl font-bold">Anslut till Zoom</span>
+              <ArrowRight className="w-5 h-5 opacity-90 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </a>
 
-          {showFullSchedule && (
-            <div className="mt-4 bg-slate-50 rounded-xl border border-slate-200 p-6 text-left animate-in fade-in slide-in-from-top-2 duration-200">
-              <h4 className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wide flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                Schema för månaden
-              </h4>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-                  <span className="text-slate-500">1:a & 3:e</span>
-                  <span className="font-medium text-slate-900">Söndagsskola</span>
+          {/* Step 2: Instruction Block (Visual distinction: White background) */}
+          <div className="flex flex-col items-center justify-center gap-3 bg-white border-2 border-brand-100 text-slate-800 py-6 px-4 rounded-2xl shadow-sm text-center cursor-default h-full relative overflow-hidden">
+             {/* Decorative background element */}
+             <div className="absolute top-0 right-0 p-16 bg-brand-50 rounded-full -mr-8 -mt-8 opacity-50 pointer-events-none"></div>
+
+            <div className="text-brand-600 text-xs font-bold uppercase tracking-wider relative z-10">När zoom startat:</div>
+            <div className="text-lg sm:text-xl font-bold leading-snug flex flex-col items-center justify-center gap-2 relative z-10">
+              <span>Välj grupprum via</span>
+              <div className="flex items-center gap-2">
+                <div className="bg-slate-800 text-white rounded-md p-1.5 shadow-md inline-flex items-center justify-center">
+                  <BreakoutIcon className="w-6 h-6" />
                 </div>
-                <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-                  <span className="text-slate-500">2:a & 4:e</span>
-                  <span className="font-medium text-slate-900">Äldstekvorum & Hjälpförening</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-500">5:e</span>
-                  <span className="font-medium text-slate-900">Biskopsrådet undervisar</span>
-                </div>
+                <span>ikonen</span>
               </div>
             </div>
-          )}
+          </div>
+
+        </div>
+
+        {/* 3. Detailed Instructions */}
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm mb-16">
+          <div className="flex flex-col sm:flex-row items-start gap-5">
+            <div className="shrink-0 bg-slate-800 text-white p-3 rounded-xl flex items-center justify-center shadow-md">
+               <BreakoutIcon className="w-8 h-8" />
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800 text-lg mb-2">{UI_TEXTS.breakoutTitle}</h3>
+              <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
+                {BREAKOUT_INFO.description}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Calendar (Meetings this Sunday) */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+            <h2 className="text-lg font-bold text-slate-800">Möten nu på söndag</h2>
+            <div className="flex items-center gap-2 text-sm font-medium text-brand-600 bg-brand-50 px-3 py-1 rounded-full">
+              <Calendar className="w-4 h-4" />
+              <span>{sundayInfo.formattedDate}</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {ROOMS.map((room, index) => (
+              <MeetingCard 
+                key={room.id}
+                title={room.name}
+                description={room.description}
+                schedule={room.getSchedule(sundayInfo.weekIndex)}
+                isPrimary={index === 0}
+                hideAction={true} // Hides the button since we have a main one
+              />
+            ))}
+          </div>
         </div>
 
         {/* Footer */}
-        <footer className="mt-12 text-center border-t border-slate-200 pt-8">
+        <footer className="mt-20 text-center border-t border-slate-200 pt-8">
           <p className="text-slate-400 text-sm font-medium">
             {HEADER_INFO.footer}
           </p>
