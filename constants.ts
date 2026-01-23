@@ -1,79 +1,91 @@
 export const HEADER_INFO = {
   title: "Delta i möten hemifrån",
   subtitle: "med Utby Församling",
-  intro: "Vi använder nu två olika länkar. Välj den länk som passar mötet du ska delta i.",
+  intro: "Vi använder nu en gemensam länk. Alla möten sker via Grupprum (Breakout Rooms) i Zoom.",
   footer: "kyrkahemma.netlify.app"
 };
 
-export const MEETINGS = [
-  {
-    id: "chapel",
-    badge: "LÄNK 1",
-    location: "Kapellsalen",
-    url: "https://zoom.us/j/97153558402?pwd=bkhtRlNxL3E3SnZCTU1oSFNHcHJNQT09",
-    meetingId: "97153558402",
-    passcode: "0",
-    schedule: [
-      {
-        time: "Söndagar 11:00-12:00",
-        title: "Sakramentsmöte",
-        targetGroup: "För alla"
-      },
-      {
-        time: "1:a & 3:e sön 12:10-13:00",
-        title: "Söndagsskola",
-        targetGroup: "Vuxna 18+"
-      }
-    ]
-  },
-  {
-    id: "rs",
-    badge: "LÄNK 2",
-    location: "Hjälpföreningens rum",
-    url: "https://zoom.us/j/98913147891?pwd=dHhvWE92c0VIQ1hobVJpRS8zQVdlQT09",
-    meetingId: "98913147891",
-    passcode: "0",
-    schedule: [
-      {
-        time: "2:a & 4:e sön 12:10-13:00",
-        title: "Hjälpföreningen",
-        targetGroup: "Kvinnor 18+"
-      }
-    ]
-  }
-];
+export const MAIN_MEETING = {
+  url: "https://zoom.us/j/97153558402?pwd=bkhtRlNxL3E3SnZCTU1oSFNHcHJNQT09",
+  meetingId: "97153558402",
+  passcode: "0", 
+  location: "Kapellsalen"
+};
 
-export const UI_TEXTS = {
-  joinButton: "Anslut via Zoom",
-  copy: "Kopiera",
-  copied: "Kopierad!",
-  idLabel: "Mötes-ID",
-  passcodeLabel: "Kod"
+export const MEETING_CONFIG = {
+  ...MAIN_MEETING,
+  title: "Söndagsmöte",
+  organizer: "Utby Församling"
 };
 
 export const APP_CONFIG = {
   redirectDelaySeconds: 5
 };
 
-export const MEETING_CONFIG = {
-  title: HEADER_INFO.title,
-  organizer: HEADER_INFO.footer,
-  url: MEETINGS[0].url,
-  meetingId: MEETINGS[0].meetingId,
-  passcode: MEETINGS[0].passcode
+export const UI_TEXTS = {
+  joinButton: "Anslut till Mötet",
+  copy: "Kopiera",
+  copied: "Kopierad!",
+  idLabel: "Mötes-ID",
+  passcodeLabel: "Kod",
+  scheduleTitle: "Schema",
+  showFullSchedule: "Visa hela månadsschemat",
+  hideFullSchedule: "Dölj schema",
+  nextSunday: "Kommande söndag",
+  today: "Idag",
+  breakoutTitle: "Så här gör du"
+};
+
+export const BREAKOUT_INFO = {
+  title: "Grupprum i Zoom",
+  description: "När du anslutit till Zoom, klicka på ikonen för Grupprum och välj Kapellsalen för att delta i sakramentsmötet.",
+  rooms: [
+    { name: "Kapellsalen", description: "Sakramentsmöte, Äldstekvorum & Söndagsskola" },
+    { name: "Hjälpföreningen", description: "Hjälpföreningens möten" }
+  ]
+};
+
+// 1 = 1st Sunday, 2 = 2nd, etc.
+export const SCHEDULE_RULES = {
+  block1: {
+    time: "11:00 - 12:00",
+    title: "Sakramentsmöte",
+    room: "Kapellsalen",
+    note: "För alla"
+  },
+  block2: {
+    time: "12:10 - 13:00",
+    variations: {
+      sundaySchool: {
+        weeks: [1, 3],
+        title: "Söndagsskola",
+        rooms: ["Kapellsalen"]
+      },
+      priesthoodRS: {
+        weeks: [2, 4],
+        title: "Äldstekvorum och Hjälpförening",
+        rooms: ["Kapellsalen", "Hjälpföreningen"]
+      },
+      fifthSunday: {
+        weeks: [5],
+        title: "Biskopsrådets undervisning",
+        rooms: ["Kapellsalen"]
+      }
+    }
+  }
 };
 
 export const TEXTS = {
   helpTitle: "Behöver du hjälp?",
-  helpSubtitle: "Här är informationen du behöver för att ansluta manuellt.",
-  zoomLinkLabel: "Zoom-länk",
-  meetingIdLabel: "Mötes-ID",
-  passcodeLabel: "Kod",
+  helpSubtitle: "Information för manuell anslutning.",
   copy: "Kopiera",
+  zoomLinkLabel: "Länk",
+  meetingIdLabel: "Mötes-ID",
+  passcodeLabel: "Lösenkod",
   paused: "Pausad",
   connecting: "Ansluter...",
   seconds: "sekunder",
   resume: "Återuppta",
   cancel: "Avbryt",
-  manualLink: "Anslut manuellt"
+  manualLink: "Öppna manuellt"
 };
