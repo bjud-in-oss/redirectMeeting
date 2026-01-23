@@ -1,7 +1,7 @@
 export const HEADER_INFO = {
-  title: "Delta i möten hemifrån",
-  subtitle: "med Utby Församling",
-  intro: "Vi använder en gemensam Zoom-länk för alla möten. Välj det rum du ska till nedan för att se schemat.",
+  title: "Öppnar Zoom",
+  subtitle: "",
+  intro: "",
   footer: "kyrkahemma.netlify.app"
 };
 
@@ -14,29 +14,30 @@ export const MAIN_MEETING = {
 
 export const MEETING_CONFIG = {
   ...MAIN_MEETING,
-  title: "Söndagsmöte",
+  title: "Öppnar Zoom-mötet...", // Den korta texten
   organizer: "Utby Församling"
 };
 
 export const APP_CONFIG = {
-  redirectDelaySeconds: 5
+  redirectDelaySeconds: 3 // Lite snabbare än förut (var 5)
 };
 
+// Behåller strukturerna för typer men tömmer innehållet då det inte används i redirect-vyn
 export const UI_TEXTS = {
   joinButton: "Anslut",
   copy: "Kopiera",
   copied: "Kopierad!",
   idLabel: "Mötes-ID",
   passcodeLabel: "Kod",
-  nextSunday: "Kommande söndag",
-  today: "Idag",
-  breakoutTitle: "Så här fungerar det",
-  closed: "Inget möte i detta rum"
+  nextSunday: "",
+  today: "",
+  breakoutTitle: "",
+  closed: ""
 };
 
 export const BREAKOUT_INFO = {
-  title: "Grupprum i Zoom",
-  description: "När du anslutit till Zoom startar du i huvudrummet. För att gå till Kapellsalen eller Hjälpföreningens rum, klickar du på ikonen.",
+  title: "",
+  description: "",
 };
 
 export interface ScheduleItem {
@@ -52,57 +53,19 @@ export interface RoomConfig {
   getSchedule: (weekIndex: number) => ScheduleItem[];
 }
 
-export const ROOMS: RoomConfig[] = [
-  {
-    id: 'kapell',
-    name: "Kapellsalen",
-    description: "Huvudrummet för gudstjänst och undervisning",
-    getSchedule: (weekIndex: number) => {
-      const schedule: ScheduleItem[] = [
-        { time: "11:00", title: "Sakramentsmöte", subtitle: "För alla" }
-      ];
-
-      // Block 2 Logic for Kapellsalen
-      if ([1, 3].includes(weekIndex)) {
-        schedule.push({ time: "12:10", title: "Söndagsskola", subtitle: "Ungdomar & Vuxna" });
-      } else if ([2, 4].includes(weekIndex)) {
-        schedule.push({ time: "12:10", title: "Äldstekvorum", subtitle: "Män 18+" });
-      } else if (weekIndex === 5) {
-        schedule.push({ time: "12:10", title: "Biskopsrådet undervisar", subtitle: "Gemensamt möte" });
-      }
-
-      return schedule;
-    }
-  },
-  {
-    id: 'rs',
-    name: "Hjälpföreningens rum",
-    description: "För Hjälpföreningens lektioner",
-    getSchedule: (weekIndex: number) => {
-      const schedule: ScheduleItem[] = [];
-
-      // Block 2 Logic for RS Room
-      if ([2, 4].includes(weekIndex)) {
-        schedule.push({ time: "12:10", title: "Hjälpföreningen", subtitle: "Kvinnor 18+" });
-      } 
-      
-      // Weeks 1, 3, 5 this room is typically empty as everyone is in Kapellsalen
-      return schedule;
-    }
-  }
-];
+export const ROOMS: RoomConfig[] = [];
 
 export const TEXTS = {
-  helpTitle: "Behöver du hjälp?",
-  helpSubtitle: "Information för manuell anslutning.",
+  helpTitle: "Problem med länken?",
+  helpSubtitle: "Här är mötesdetaljerna:",
   copy: "Kopiera",
   zoomLinkLabel: "Länk",
   meetingIdLabel: "Mötes-ID",
   passcodeLabel: "Lösenkod",
   paused: "Pausad",
-  connecting: "Ansluter...",
+  connecting: "Du slussas vidare...",
   seconds: "sekunder",
   resume: "Återuppta",
-  cancel: "Avbryt",
-  manualLink: "Öppna manuellt"
+  cancel: "Pausa",
+  manualLink: "Klicka här om inget händer"
 };
