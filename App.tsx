@@ -16,7 +16,7 @@ const App: React.FC = () => {
         <RedirectCard />
 
         {/* Optional: Help Card in case redirect fails or user needs ID manually */}
-        <div className="opacity-80 hover:opacity-100 transition-opacity duration-500">
+        <div>
            <HelpCard />
         </div>
 

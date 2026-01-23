@@ -56,8 +56,9 @@ export interface RoomConfig {
 export const ROOMS: RoomConfig[] = [];
 
 export const TEXTS = {
-  helpTitle: "Problem med länken?",
-  helpSubtitle: "Här är mötesdetaljerna:",
+  helpTitle: "Har du problem att ansluta till kyrkans zoom?",
+  helpInstruction: "Du kan ansluta antingen genom att klistra in länken i en webbläsare eller starta Zoom-appen och ange mötes-id och lösenordet.",
+  toggleHelp: "Visa manuell anslutning",
   copy: "Kopiera",
   zoomLinkLabel: "Länk",
   meetingIdLabel: "Mötes-ID",
