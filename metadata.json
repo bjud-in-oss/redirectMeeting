@@ -1,5 +1,6 @@
 {
   "name": "Kyrka Hemma - Utby",
   "description": "Delta i Utby Församlings möten hemifrån.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": []
 }

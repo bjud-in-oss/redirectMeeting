@@ -6,7 +6,7 @@ export const HEADER_INFO = {
 };
 
 export const MAIN_MEETING = {
-  url: "https://zoom.us/j/97153558402?pwd=bkhtRlNxL3E3SnZCTU1oSFNHcHJNQT09",
+  url: "https://zoom.us/j/97153558402?pwd=SOYF7abJpu2EbhdPe4PJLxYaw5Tq5G.1",
   meetingId: "97153558402",
   passcode: "0", 
   location: "Zoom"
